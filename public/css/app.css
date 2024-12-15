@@ -1,0 +1,77 @@
+/* Light mode colors */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #212529;
+    --h1-color: #1bd324;
+    --h2-color: #d3a81b;
+}
+
+/* Dark mode colors */
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --h1-color: #ec5555;
+    --h2-color: #801bd3;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1 {
+    color: var(--h1-color);
+    transition: color 0.3s ease;
+}
+
+h2 {
+    color: var(--h2-color);
+    transition: color 0.3s ease;
+}
+
+/* Color theme slider css*/
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: background-color 0.4s;
+}
+
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.4s;
+}
+
+input:checked+.slider {
+    background-color: #007bff;
+}
+
+input:checked+.slider::before {
+    transform: translateX(26px);
+}
