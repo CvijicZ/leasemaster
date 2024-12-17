@@ -1,33 +1,54 @@
 /* Light mode colors */
 :root {
-    --bg-color: #ffffff;
-    --text-color: #212529;
-    --h1-color: #1bd324;
-    --h2-color: #d3a81b;
+    --custom-bg:#f8f9fa;
+    --custom-text: #212529;
+    --custom-text-secondary:#6c757d;
+    --custom-primary:#0056b3;
+    --custom-secondary:#6c757d;
+    --custom-surface:#ffffff;
+    --custom-link:#007bff;
+    --bg-transparent-primary:248, 249, 250;
+  
 }
 
 /* Dark mode colors */
 [data-theme="dark"] {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --h1-color: #ec5555;
-    --h2-color: #801bd3;
+    --custom-bg:#121212;
+    --custom-text: #f8f9fa;
+    --custom-text-secondary:#adb5bd;
+    --custom-primary:#66ccff;
+    --custom-secondary:#adb5bd;
+    --custom-surface:#1e1e1e;
+    --custom-link:#66ccff;
+    --bg-transparent-primary:18, 18, 18;
+    
+}
+
+.transparent-bg-primary{
+    background-color: rgba(var(--bg-transparent-primary), 0.8);
+}
+
+
+.bg-custom-secondary{
+    background-color: var(--custom-secondary);
+}
+
+.bg-custom{
+    background-color: var(--custom-surface);
+}
+
+.text-custom-primary{
+    color:var(--custom-text);
+}
+
+.text-custom-secondary{
+    color:var(--custom-secondary);
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--custom-bg);
+    color: var(--custom-text);
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-h1 {
-    color: var(--h1-color);
-    transition: color 0.3s ease;
-}
-
-h2 {
-    color: var(--h2-color);
-    transition: color 0.3s ease;
 }
 
 /* Color theme slider css*/
@@ -85,7 +106,7 @@ input:checked+.slider::before {
 /* Custom Theme Guide Card */
 .theme-guide {
     position: fixed;
-    top: 100px;
+    top: 60px;
     right: 20px;
     z-index: 1050;
     animation: fadeIn 0.5s ease-out;

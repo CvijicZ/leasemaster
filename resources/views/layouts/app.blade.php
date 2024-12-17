@@ -34,6 +34,15 @@
                         <a class="nav-link" href="#">Contact</a>
                     </li>
 
+                    @guest
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    @endguest
+
                     <!-- Theme Toggle Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="themeDropdown" role="button"
@@ -72,9 +81,16 @@
     </div>
 
 
-    <div class="container mt-4">
+    <div>
         @yield('content')
     </div>
+
+      <!-- Footer -->
+      <footer class="footer text-white py-3">
+        <div class="container text-center">
+            <p>&copy; 2024 LeaseMaster. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
@@ -82,6 +98,8 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <script src="{{ asset('js/color-theme.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+
 
 </body>
 
