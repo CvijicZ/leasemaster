@@ -36,10 +36,10 @@
 
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('auth', ['section' => 'register']) }}">Register</a>
+                            <a class="nav-link" href="{{ route('auth.show', ['section' => 'register']) }}">Register</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('auth', ['section' => 'login']) }}">Login</a>
+                            <a class="nav-link" href="{{ route('auth.show', ['section' => 'login']) }}">Login</a>
                         </li>
                     @endguest
 
