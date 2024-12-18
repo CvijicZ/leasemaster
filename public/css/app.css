@@ -24,6 +24,10 @@
     
 }
 
+.custom-link-color{
+    color:var(--custom-link);
+}
+
 .transparent-bg-primary{
     background-color: rgba(var(--bg-transparent-primary), 0.8);
 }
