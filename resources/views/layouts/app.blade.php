@@ -36,12 +36,18 @@
 
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('auth.show', ['section' => 'register']) }}">Register</a>
+                            <a class="nav-link" href="{{ route('register') }}">Register</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('auth.show', ['section' => 'login']) }}">Login</a>
+                            <a class="nav-link" href="{{ route('login') }}">Login</a>
                         </li>
                     @endguest
+
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('auth.logout') }}">Logout</a>
+                        </li>
+                    @endauth
 
                     <!-- Theme Toggle Dropdown -->
                     <li class="nav-item dropdown">
@@ -100,4 +106,5 @@
     </footer>
 
 </body>
+
 </html>

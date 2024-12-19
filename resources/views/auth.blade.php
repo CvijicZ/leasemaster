@@ -16,7 +16,7 @@
                 @endif
                 <ul class="nav nav-tabs justify-content-center mb-4" id="authTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a href="{{ route('auth.show', ['section' => 'login']) }}"
+                        <a href="{{ route('login') }}"
                             class="nav-link text-custom-link-color {{ $section === 'login' ? 'active' : '' }}"
                             id="login-tab" role="tab" aria-controls="login"
                             aria-selected="{{ $section === 'login' ? 'true' : 'false' }}">
@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a href="{{ route('auth.show', ['section' => 'register']) }}"
+                        <a href="{{ route('register') }}"
                             class="nav-link text-custom-link-color {{ $section === 'register' ? 'active' : '' }}"
                             id="register-tab" role="tab" aria-controls="register"
                             aria-selected="{{ $section === 'register' ? 'true' : 'false' }}">
@@ -38,18 +38,22 @@
                     <!-- Login Form -->
                     <div class="tab-pane fade {{ $section === 'login' ? 'show active' : '' }}" id="login"
                         role="tabpanel" aria-labelledby="login-tab">
-                        <form>
+                        <form method="POST" action="{{ route('login') }}">
                             <div class="mb-3">
+                                @error('email')
+                                    <span class="text-danger">{{ $message }}</span> <br>
+                                @enderror
                                 <label for="login-email" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="login-email" placeholder="Enter your email"
+                                <input type="email" class="form-control" name="email" placeholder="Enter your email"
                                     required>
                             </div>
                             <div class="mb-3">
                                 <label for="login-password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="login-password"
+                                <input type="password" class="form-control" name="password"
                                     placeholder="Enter your password" required>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Login</button>
+                            @csrf
                         </form>
                     </div>
 

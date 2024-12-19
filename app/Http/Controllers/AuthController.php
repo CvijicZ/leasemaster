@@ -4,19 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    private const VIEW_SECTIONS = ['login', 'register'];
 
-    public function show($section)
+    public function showLogin()
     {
-        if (!in_array($section, self::VIEW_SECTIONS)) {
-            abort(404);
+        return view('auth', ['section' => 'login']);
+    }
+
+    public function showRegistration()
+    {
+        return view('auth', ['section' => 'register']);
+    }
+
+    public function authenticate(LoginRequest $request): RedirectResponse
+    {
+        $credentials = $request->validated();
+
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended();
         }
 
-        return view('auth', ['section' => $section]);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'You have been logged out.');
     }
 
     public function store(CreateUserRequest $request)
@@ -25,13 +56,12 @@ class AuthController extends Controller
         $validatedData = $request->validated();
 
         try {
-            $user = new User($validatedData);
-            $user->save();
+            User::create($validatedData);
 
-            return redirect()->route('auth.show', ['section' => 'login'])
+            return redirect()->route('login')
                 ->with('success', 'User created successfully!');
         } catch (\Exception $e) {
-            return response()->redirectToRoute('auth.show', ['section' => 'register'])
+            return response()->redirectToRoute('register')
                 ->withErrors(['error' => 'An error occurred while creating the user. Please try again.']);
         }
     }
