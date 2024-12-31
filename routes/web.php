@@ -2,18 +2,20 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/test', function () {
-    return view('test');
-})->middleware('auth')->name('test');
+Route::get('/admin/dashboard', [UserController::class, 'index'])
+    ->middleware(['auth', 'admin'])
+    ->name('admin.dashboard');
 
-Route::get('/admin', function () {
-    return view('admin');
-})->middleware(['auth', 'admin'])->name('admin');
+ Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+ Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+ Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegistration'])->name('register');

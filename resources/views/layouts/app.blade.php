@@ -27,6 +27,11 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
                     </li>
+                    @admin
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.dashboard')}}">Dashboard</a>
+                    </li>
+                    @endadmin
                     <li class="nav-item">
                         <a class="nav-link" href="#">Pricing</a>
                     </li>
