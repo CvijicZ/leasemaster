@@ -15,12 +15,25 @@ Route::middleware(['admin'])
     ->controller(UserController::class)
     ->group(function () {
 
-        Route::get('/dashboard', 'index')->name('admin.dashboard');
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+
+        Route::get('/rentals', function () {
+            return view('admin.rentals');
+        })->name('admin.rentals');
+
+        Route::get('/settings', function () {
+            return view('admin.settings');
+        })->name('admin.settings');
+
+        Route::get('/users', 'index')->name('admin.users');
         Route::get('/users/{user}/edit', 'edit')->name('admin.users.edit');
 
         Route::delete('/users/{user}', 'destroy')->name('admin.users.destroy');
 
         Route::put('/users/{user}', 'update')->name('admin.users.update');
+        Route::put('/users/{user}', 'updateRole')->name('admin.users.updateRole');
     });
 
 Route::controller(AuthController::class)->group(function () {

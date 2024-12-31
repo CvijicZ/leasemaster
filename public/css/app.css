@@ -106,6 +106,16 @@ input:checked+.slider::before {
     transition: color 0.3s;
 }
 
+.nav-link.active {
+    display: inline-block;
+    border-bottom: 2px solid blue;
+    font-weight: bold;
+}
+
+.admin-sidebar{
+    border-right: 2px solid var(--custom-text-secondary);
+}
+
 
 /* Custom Theme Guide Card */
 .theme-guide {

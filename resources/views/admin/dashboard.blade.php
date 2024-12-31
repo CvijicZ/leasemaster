@@ -1,62 +1,54 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
-@section('content')
-    <div class="container-fluid bg-custom text-custom-primary min-vh-100">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 p-3 bg-custom-secondary">
-                <h3 class="text-center">Admin Panel</h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link custom-link-color" href="#">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link custom-link-color" href="#">Manage Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link custom-link-color" href="#">Settings</a>
-                    </li>
-                </ul>
+@section('admin-content')
+    <h2 class="text-custom-primary">Admin Dashboard</h2>
+    <div class="row g-4">
+        <!-- Statistic Cards -->
+        <div class="col-md-4">
+            <div class="card bg-custom-secondary text-custom-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h4><i class="fa-solid fa-users"></i> Users</h4>
+                    <p class="fs-2 fw-bold">123</p>
+                    <small>Total Registered Users</small>
+                </div>
             </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-custom-secondary text-custom-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h4><i class="fa-solid fa-car"></i> Rentals</h4>
+                    <p class="fs-2 fw-bold">456</p>
+                    <small>Active Rentals</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-custom-secondary text-custom-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h4><i class="fa-solid fa-coins"></i> Revenue</h4>
+                    <p class="fs-2 fw-bold">$78,910</p>
+                    <small>This Month</small>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <!-- Main Content -->
-            <div class="col-md-9 col-lg-10 p-4">
-                <h2 class="text-custom-primary">Users Management</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="bg-custom-secondary text-custom-primary">
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Admin</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->role }}</td>
-                                    <td>
-                                        <!-- Edit Button -->
-                                        <a href="{{ route('admin.users.edit', $user) }}"
-                                            class="btn btn-sm btn-primary">Edit</a>
-
-                                        <!-- Delete Button -->
-                                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
-                                            style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+    <div class="row mt-5">
+        <!-- Chart 1 -->
+        <div class="col-md-6">
+            <div class="card bg-custom-secondary text-custom-primary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa-solid fa-chart-pie"></i> User Account Types</h5>
+                    <canvas id="userChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- Chart 2 -->
+        <div class="col-md-6">
+            <div class="card bg-custom-secondary text-custom-primary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa-solid fa-chart-line"></i> Vehicle Rentals</h5>
+                    <canvas id="rentalChart"></canvas>
                 </div>
             </div>
         </div>
