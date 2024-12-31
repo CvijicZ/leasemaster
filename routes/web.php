@@ -8,18 +8,26 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/admin/dashboard', [UserController::class, 'index'])
-    ->middleware(['auth', 'admin'])
-    ->name('admin.dashboard');
+Route::middleware(['auth'])->group(function () {});
 
- Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
- Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
- Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+Route::middleware(['admin'])
+    ->prefix('admin')
+    ->controller(UserController::class)
+    ->group(function () {
 
+        Route::get('/dashboard', 'index')->name('admin.dashboard');
+        Route::get('/users/{user}/edit', 'edit')->name('admin.users.edit');
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::get('/register', [AuthController::class, 'showRegistration'])->name('register');
-Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+        Route::delete('/users/{user}', 'destroy')->name('admin.users.destroy');
 
-Route::post('/register', [AuthController::class, 'store'])->name('auth.store');
-Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.login');
+        Route::put('/users/{user}', 'update')->name('admin.users.update');
+    });
+
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'showLogin')->name('login');
+    Route::get('/register', 'showRegistration')->name('register');
+    Route::get('/logout', 'logout')->name('auth.logout');
+
+    Route::post('/register', 'store')->name('auth.store');
+    Route::post('/login', 'authenticate')->name('auth.login');
+});
