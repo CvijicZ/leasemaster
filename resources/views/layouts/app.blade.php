@@ -14,6 +14,21 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+    <style>
+        /* Fixed Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        /* Adjust main content */
+        .main-content {
+            margin-top: 80px; /* Adjust based on navbar height */
+        }
+    </style>
 </head>
 
 <body>
@@ -86,8 +101,6 @@
         </div>
     </nav>
 
-
-
     <div class="theme-guide d-none" id="themeGuide">
         <div class="card shadow-sm">
             <div class="card-body position-relative">
@@ -101,6 +114,10 @@
         </div>
     </div>
 
+    <div class="main-content">
+        @yield('content')
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -109,14 +126,10 @@
     <script src="{{ asset('js/color-theme.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 
-    <div>
-        @yield('content')
-    </div>
-
     <!-- Footer -->
     <footer class="footer text-white py-3">
         <div class="container text-center">
-            <p>&copy; 2024 LeaseMaster. All Rights Reserved.</p>
+            <p>&copy; 2025 LeaseMaster. All Rights Reserved.</p>
         </div>
     </footer>
 

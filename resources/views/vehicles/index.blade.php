@@ -31,10 +31,9 @@
                      data-vehicle-name="{{ $vehicle->make . ' ' . $vehicle->model }}">
                     <div class="card shadow-sm bg-custom-secondary text-custom-primary h-100">
                         @php
-                        // Define the directory for the vehicle's images
+                        // TODO: find a better way of storing and showing images
                         $imageDirectory = public_path("images/vehicles/{$vehicle->id}");
                         
-                        // Fetch the first image that starts with "1." (any extension)
                         $firstImage = is_dir($imageDirectory) 
                             ? collect(glob($imageDirectory . '/1.*'))->first() 
                             : null;

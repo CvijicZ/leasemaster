@@ -6,12 +6,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 
 Route::get('/', function () {
-    return view('home');
+    return view('home', app(VehicleController::class)->index());
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
-
 });
 
 Route::middleware(['admin'])
@@ -26,7 +25,9 @@ Route::middleware(['admin'])
             return view('admin.dashboard');
         })->name('admin.dashboard');
 
-        Route::get('/rentals', [VehicleController::class, 'index'])->name('admin.rentals');
+        Route::get('/rentals', function () {
+            return view('vehicles.index', app(VehicleController::class)->index());
+        })->name('admin.rentals');
 
         Route::get('/settings', function () {
             return view('admin.settings');

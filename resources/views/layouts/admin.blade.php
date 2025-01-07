@@ -4,7 +4,7 @@
     <div class="container-fluid min-vh-100">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 p-3 bg-custom-primary admin-sidebar">
+            <div class="col-md-3 col-lg-2 p-3 bg-custom-primary admin-sidebar position-fixed h-100">
                 <h3 class="text-custom-secondary">Admin Panel</h3>
                 <ul class="nav flex-column text-start ps-3">
                     <li class="nav-item">
@@ -41,7 +41,7 @@
             </div>
 
             <!-- Main Content -->
-            <div class="col-md-9 col-lg-10 p-4">
+            <div class="col-md-9 col-lg-10 p-4 offset-md-3 offset-lg-2">
                 @yield('admin-content')
             </div>
         </div>
