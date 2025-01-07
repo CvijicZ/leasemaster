@@ -26,6 +26,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-custom-primary {{ request()->is('admin/vehicles/create') ? 'active' : '' }}"
+                            href="{{route('vehicles.create')}}">
+                            <i class="fa-solid fa-car"> +</i> Create vehicle
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-custom-primary {{ request()->is('admin/settings') ? 'active' : '' }}"
                             href="{{ route('admin.settings') }}">
                             <i class="fa-solid fa-gears"></i> Settings

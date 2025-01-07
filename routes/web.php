@@ -3,25 +3,30 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleController;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::middleware(['auth'])->group(function () {});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
+
+});
 
 Route::middleware(['admin'])
     ->prefix('admin')
     ->controller(UserController::class)
     ->group(function () {
 
+        Route::get('/vehicles/create', [VehicleController::class, 'create'])->name('vehicles.create');
+        Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
+
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         })->name('admin.dashboard');
 
-        Route::get('/rentals', function () {
-            return view('admin.rentals');
-        })->name('admin.rentals');
+        Route::get('/rentals', [VehicleController::class, 'index'])->name('admin.rentals');
 
         Route::get('/settings', function () {
             return view('admin.settings');

@@ -12,7 +12,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('admin.users', compact('users'));
+        return view('user.index', compact('users'));
     }
 
     public function destroy(User $user)
