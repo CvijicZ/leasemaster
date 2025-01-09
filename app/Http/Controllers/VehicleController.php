@@ -10,6 +10,19 @@ use Illuminate\Support\Facades\Log;
 
 class VehicleController extends Controller
 {
+    public function show($id)
+    {
+        $vehicle = Vehicle::findOrFail($id);
+    
+        $leasingCosts = $this->calculateBaseLeasingCost(
+            $vehicle->value,
+            $vehicle->miles,
+            $vehicle->year
+        );
+    
+        return view('vehicles.show', compact('vehicle', 'leasingCosts'));
+    }
+    
 
     public function index()
     {
@@ -60,22 +73,44 @@ class VehicleController extends Controller
     }
 }
 
-    
-    
-    
+private function calculateBaseLeasingCost(float $value, float $miles, int $year): array
+{
+    // Base depreciation rate per year
+    $depreciationRate = 0.15;
 
-    public function show($id)
-    {
-        // Fetch the vehicle by ID
-        $vehicle = Vehicle::findOrFail($id);
+    // Mileage depreciation factor
+    $mileageDepreciationFactor = 0.01; 
 
-        // Fetch lease options (example data, replace with actual query if needed)
-        $leaseOptions = [
-            ['duration' => '12 months', 'price' => 2000],
-            ['duration' => '24 months', 'price' => 1800],
-            ['duration' => '36 months', 'price' => 1500],
-        ];
+    // Base annual leasing percentage of vehicle value
+    $leasingPercentage = 0.15; 
 
-        return view('vehicles.show', compact('vehicle', 'leaseOptions'));
-    }
+    // Initial payment multiplier 
+    $initialPaymentMultiplier = 6; 
+
+    // Calculate vehicle depreciation based on its age
+    $age = (int) date("Y") - $year;
+    $depreciatedValue = $value * pow(1 - $depreciationRate, max(0, $age));
+
+    // Adjust for mileage depreciation
+    $mileageAdjustmentFactor = floor($miles / 10000) * $mileageDepreciationFactor;
+    $finalValue = $depreciatedValue * (1 - $mileageAdjustmentFactor);
+
+    // Ensure the vehicle value doesn't drop below a minimum threshold
+    $finalValue = max($finalValue, $value * 0.2);
+
+    // Calculate the base leasing cost
+    $annualLeasingCost = $finalValue * $leasingPercentage;
+    $monthlyLeasingCost = $annualLeasingCost / 12;
+
+    $initialPayment = $monthlyLeasingCost * $initialPaymentMultiplier;
+
+    return [
+        'initial_payment' => round($initialPayment, 2),
+        'monthly_price' => round($monthlyLeasingCost, 2),
+    ];
+}
+
+
+
+
 }
