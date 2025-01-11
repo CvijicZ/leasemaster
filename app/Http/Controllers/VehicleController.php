@@ -14,7 +14,7 @@ class VehicleController extends Controller
     {
         $vehicle = Vehicle::findOrFail($id);
     
-        $leasingCosts = $this->calculateBaseLeasingCost(
+        $leasingCosts = self::calculateBaseLeasingCost(
             $vehicle->value,
             $vehicle->miles,
             $vehicle->year
@@ -73,19 +73,28 @@ class VehicleController extends Controller
     }
 }
 
-private function calculateBaseLeasingCost(float $value, float $miles, int $year): array
-{
+public static function calculateBaseLeasingCost(
+    float $value,
+    float $miles,
+    int $year,
+    int $annualMiles = 5000, // Default value matching the JS code
+    int $contractMonths = 24 // Default contract length
+): array {
+    
     // Base depreciation rate per year
     $depreciationRate = 0.15;
 
     // Mileage depreciation factor
-    $mileageDepreciationFactor = 0.01; 
+    $mileageDepreciationFactor = 0.01;
 
     // Base annual leasing percentage of vehicle value
-    $leasingPercentage = 0.15; 
+    $leasingPercentage = 0.15;
 
-    // Initial payment multiplier 
-    $initialPaymentMultiplier = 6; 
+    // Initial payment multiplier
+    $initialPaymentMultiplier = 6;
+
+    // Default annual mileage used for calculations
+    $defaultAnnualMiles = 5000;
 
     // Calculate vehicle depreciation based on its age
     $age = (int) date("Y") - $year;
@@ -98,19 +107,26 @@ private function calculateBaseLeasingCost(float $value, float $miles, int $year)
     // Ensure the vehicle value doesn't drop below a minimum threshold
     $finalValue = max($finalValue, $value * 0.2);
 
-    // Calculate the base leasing cost
+    // Calculate the base annual and monthly leasing costs
     $annualLeasingCost = $finalValue * $leasingPercentage;
     $monthlyLeasingCost = $annualLeasingCost / 12;
 
+    // Adjust monthly price based on annual mileage
+    $mileageImpact = ($annualMiles - $defaultAnnualMiles) / 10000;
+    $adjustedMonthlyPrice = $monthlyLeasingCost + ($mileageImpact * 100);
+
+    // Calculate total price based on contract length
+    $totalPrice = $adjustedMonthlyPrice * $contractMonths;
+
+    // Calculate the initial payment
     $initialPayment = $monthlyLeasingCost * $initialPaymentMultiplier;
 
     return [
         'initial_payment' => round($initialPayment, 2),
-        'monthly_price' => round($monthlyLeasingCost, 2),
+        'monthly_price' => round($adjustedMonthlyPrice, 2),
+        'total_price' => round($totalPrice, 2),
     ];
 }
-
-
 
 
 }

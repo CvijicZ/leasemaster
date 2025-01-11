@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\ContractController;
 
 Route::get('/', function () {
     return view('home', app(VehicleController::class)->index());
@@ -11,6 +12,13 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
+    Route::view('/contractTest', 'user.create-contract');
+    Route::get('/contract/{contract}', [ContractController::class, 'create'])->name('contract.show');
+
+
+Route::get('/lease/enquire', [ContractController::class, 'create'])->name('lease.create');
+
+
 });
 
 Route::middleware(['admin'])

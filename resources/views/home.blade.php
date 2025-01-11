@@ -49,7 +49,7 @@
                                         <p class="card-text">Miles: {{ number_format($vehicle->miles, 0) }}</p>
                                     </div>
                                 </div>
-                                <a href="#" class="btn btn-primary w-100 mt-3">Lease Now</a>
+                                <a href="/vehicles/{{$vehicle->id}}" class="btn btn-primary w-100 mt-3">Lease Now</a>
                                 <button class="btn btn-outline-secondary w-100 mt-2 show-more-btn" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#details{{ $vehicle->id }}"
                                     aria-expanded="false" aria-controls="details{{ $vehicle->id }}">Show more</button>

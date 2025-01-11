@@ -20,32 +20,32 @@
             <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
                 <div class="bg-custom text-custom-secondary rounded-lg p-4 shadow-lg w-100">
                     <h5 class="text-center mb-4">Personalize Your Lease</h5>
-                    <form id="leaseForm">
+
+                    <form action="{{route('lease.create')}}" method="GET" id="leaseForm">
+                        <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
 
                         <!-- Contract Length -->
                         <div class="mb-4">
                             <label for="contractLength" class="form-label">Contract Length (months)</label>
-                            <div class="btn-group w-100" role="group">
+                            <select class="form-select" name="contract_length" id="contractLength">
                                 @foreach ([24, 36, 48] as $length)
-                                    <button type="button"
-                                        class="btn btn-outline-primary contract-length-btn {{ $length == 24 ? 'active' : '' }}">{{ $length }}</button>
+                                    <option value="{{ $length }}" {{ $length == 24 ? 'selected' : '' }}>
+                                        {{ $length }}
+                                    </option>
                                 @endforeach
-                            </div>
+                            </select>
                         </div>
 
                         <!-- Annual Miles -->
                         <div class="mb-4">
                             <label for="annualMiles" class="form-label">Annual Miles</label>
-                            <input type="range" class="form-range" min="5000" max="30000" step="5000"
-                                value="5000" id="annualMiles">
-                            <div class="d-flex justify-content-between">
-                                <span>5K</span>
-                                <span>10K</span>
-                                <span>15K</span>
-                                <span>20K</span>
-                                <span>25K</span>
-                                <span>30K</span>
-                            </div>
+                            <select class="form-select" name="annual_miles" id="annualMiles">
+                                @foreach (range(5000, 30000, 5000) as $miles)
+                                    <option value="{{ $miles }}" {{ $miles == 5000 ? 'selected' : '' }}>
+                                        {{ $miles / 1000 }}K
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <!-- Price and Action -->
@@ -54,14 +54,11 @@
                                 <p class="mb-1">Personal Lease</p>
                                 <h3 class="text-custom-primary fw-bold" id="monthlyPrice">$
                                     {{ $leasingCosts['monthly_price'] }} / month</h3>
-                                <small class="text-custom-secondary" id="initialPaymentDisplay">Initial payment:
-                                    £{{ $leasingCosts['initial_payment'] }} </small>
-                                <p id="totalPriceDisplay" class="mb-1"></p>
-                                <p id="annualPriceDisplay" class="mb-1"></p>
+                                <small class="text-custom-secondary">Initial payment:
+                                    £<span id="initialPayment">{{ $leasingCosts['initial_payment'] }}</span></small>
                             </div>
-                            <a href="#" class="btn btn-outline-primary">Enquire</a>
+                            <button type="submit" class="btn btn-outline-primary">Enquire</button>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -166,14 +163,7 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
     </div>
-
 
     <!-- Custom CSS -->
     <style>
@@ -189,10 +179,7 @@
             border-radius: 15px;
         }
 
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            filter: invert(100%);
-        }
+   
     </style>
 
     <script>
