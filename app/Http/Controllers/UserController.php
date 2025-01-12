@@ -26,9 +26,10 @@ class UserController extends Controller
         return view('user.edit', compact('user'));
     }
 
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(UserUpdateRequest $request, int $userId)
     {
         $validated = $request->validated();
+        $user=User::find($userId);
 
         if (!$request->filled('password')) {
             unset($validated['password']);

@@ -48,7 +48,7 @@ Route::middleware(['admin'])
         Route::delete('/users/{user}', 'destroy')->name('admin.users.destroy');
 
         Route::put('/users/{user}', 'update')->name('admin.users.update');
-        Route::put('/users/{user}', 'updateRole')->name('admin.users.updateRole');
+        Route::put('/users/{user}/role', 'updateRole')->name('admin.users.updateRole');
     });
 
 Route::controller(AuthController::class)->group(function () {
