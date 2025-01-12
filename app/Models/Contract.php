@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Payment;
 
 class Contract extends Model
 {
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
     protected $fillable = [
         'user_id',
         'vehicle_id',

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('contract_id');
+            $table->foreignId('contract_id')->constrained()->onDelete('cascade');
             $table->string('payment_type');
             $table->float('payed_value', 2);
 
