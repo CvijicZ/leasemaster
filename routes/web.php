@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('home', app(VehicleController::class)->index());
@@ -31,9 +32,7 @@ Route::middleware(['admin'])
         Route::get('/vehicles/create', [VehicleController::class, 'create'])->name('vehicles.create');
         Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
 
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
         Route::get('/rentals', function () {
             return view('vehicles.index', app(VehicleController::class)->index());
