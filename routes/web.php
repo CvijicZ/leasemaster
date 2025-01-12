@@ -17,6 +17,8 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/lease/enquire', [ContractController::class, 'create'])->name('lease.create');
+Route::post('/lease/enquire', [ContractController::class, 'store'])->name('lease.store');
+
 
 
 });

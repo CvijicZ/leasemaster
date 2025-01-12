@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Vehicle;
 
 return new class extends Migration
 {
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->foreign('leased_by')
                 ->references('id')
                 ->on('users');
-            $table->string('status')->default('garage');
+            $table->string('status')->default(Vehicle::STATUS_AVAILABLE);
             $table->string('make');
             $table->string('model');
             $table->string('engine');

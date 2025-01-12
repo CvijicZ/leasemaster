@@ -11,5 +11,9 @@ class Contract extends Model
         'vehicle_id',
         'contract_months',
         'annual_miles',
+        'initial_payment',
+        'total_price',
+        'price_per_month',
+        'valid_until'
     ];
 }

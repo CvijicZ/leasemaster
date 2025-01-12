@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <div class="container-fluid bg-custom-light py-5">
 
         <!-- Vehicle Details Header -->
@@ -27,7 +36,7 @@
                         <!-- Contract Length -->
                         <div class="mb-4">
                             <label for="contractLength" class="form-label">Contract Length (months)</label>
-                            <select class="form-select" name="contract_length" id="contractLength">
+                            <select class="form-select" name="contract_months" id="contractLength">
                                 @foreach ([24, 36, 48] as $length)
                                     <option value="{{ $length }}" {{ $length == 24 ? 'selected' : '' }}>
                                         {{ $length }}

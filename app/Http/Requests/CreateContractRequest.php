@@ -27,8 +27,8 @@ class CreateContractRequest extends FormRequest
 
         return [
             'vehicle_id' => ['required', 'integer'],
-            'contract_length' => ['required', 'integer', Rule::in($allowedContractLengths)],
-            'annual_miles' => ['required', 'integer', Rule::in($allowedAnnualMiles)]
+            'contract_months' => ['required', 'integer', Rule::in($allowedContractLengths)],
+            'annual_miles' => ['required', 'integer', Rule::in($allowedAnnualMiles)],
         ];
     }
 }
