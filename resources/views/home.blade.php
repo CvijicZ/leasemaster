@@ -20,6 +20,7 @@
             <h2 class="text-center mb-5">Featured Vehicles</h2>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 @foreach ($vehicles as $vehicle)
+                @if($vehicle->status != "leased")
                     <div class="col">
                         <div class="card bg-custom text-custom-primary shadow-sm h-100">
 
@@ -65,6 +66,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 @endforeach
             </div>
         </div>
