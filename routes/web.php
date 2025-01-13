@@ -11,17 +11,16 @@ Route::get('/', function () {
     return view('home', app(VehicleController::class)->index());
 })->name('home');
 
+Route::get('/contract/{id}', [ContractController::class, 'show'])->middleware('contract.owner')->name('contract.show');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
     Route::view('/contractTest', 'user.create-contract');
-    Route::get('/contract/{contract}', [ContractController::class, 'create'])->name('contract.show');
+    Route::get('/contract/{contract}', [ContractController::class, 'create'])->name('contract.create');
 
 
-Route::get('/lease/enquire', [ContractController::class, 'create'])->name('lease.create');
-Route::post('/lease/enquire', [ContractController::class, 'store'])->name('lease.store');
-
-
-
+    Route::get('/lease/enquire', [ContractController::class, 'create'])->name('lease.create');
+    Route::post('/lease/enquire', [ContractController::class, 'store'])->name('lease.store');
 });
 
 Route::middleware(['admin'])
@@ -31,6 +30,9 @@ Route::middleware(['admin'])
 
         Route::get('/vehicles/create', [VehicleController::class, 'create'])->name('vehicles.create');
         Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
+        Route::delete('/vehicles/delete', [VehicleController::class, 'destroy'])->name('vehicles.delete');
+        Route::get('/contract/{id}', [ContractController::class, 'show'])->name('admin.contract.show');
+
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 

@@ -3,13 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Vehicle;
 use App\Http\Requests\CreateVehicleRequest;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use Illuminate\Support\Carbon;
+use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
+    public function destroy(Request $request)
+    {
+        $validated = $request->validate([
+            'vehicle_id' => 'required|integer|exists:vehicles,id',
+        ]);
+    
+        $vehicle = Vehicle::find($validated['vehicle_id']);
+
+        $vehicle->delete();
+
+        return redirect()->route('admin.rentals')->with('success', 'Vehicle deleted successfully.');
+    }
+    
+
     public function show($id)
     {
         $vehicle = Vehicle::findOrFail($id);
@@ -30,11 +46,36 @@ class VehicleController extends Controller
 
         foreach ($vehicles as $vehicle) {
             $costs = self::calculateBaseLeasingCost($vehicle->value, $vehicle->miles, $vehicle->year);
+
+            $user = User::find($vehicle->leased_by);
+
+            $contract = $vehicle->contract;
+            if ($contract) {
+                $vehicle->contract_id=$contract->id;
+                $createdAt = $contract->created_at->toDateString();
+                $validUntil = $contract->valid_until ? $contract->valid_until->toDateString() : null;
+
+                if ($validUntil) {
+
+                    $duration = Carbon::parse($createdAt)->diffInDays(Carbon::parse($validUntil));
+                    $vehicle->contract_duration = $duration;
+                    $vehicle->contract_created_at = $createdAt;
+                    $vehicle->contract_valid_until = $validUntil;
+                } else {
+                    $vehicle->contract_duration = null;
+                }
+            }
+
             $vehicle->price_per_month = $costs['monthly_price'];
+
+            if ($user) {
+                $vehicle->user = $user;
+            }
         }
 
         return compact('vehicles');
     }
+
 
 
     public function create()
