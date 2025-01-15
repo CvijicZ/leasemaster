@@ -17,14 +17,14 @@ class VehicleController extends Controller
         $validated = $request->validate([
             'vehicle_id' => 'required|integer|exists:vehicles,id',
         ]);
-    
+
         $vehicle = Vehicle::find($validated['vehicle_id']);
 
         $vehicle->delete();
 
         return redirect()->route('admin.rentals')->with('success', 'Vehicle deleted successfully.');
     }
-    
+
 
     public function show($id)
     {
@@ -51,18 +51,19 @@ class VehicleController extends Controller
 
             $contract = $vehicle->contract;
             if ($contract) {
-                $vehicle->contract_id=$contract->id;
+                $vehicle->contract_id = $contract->id;
                 $createdAt = $contract->created_at->toDateString();
                 $validUntil = $contract->valid_until ? $contract->valid_until->toDateString() : null;
 
                 if ($validUntil) {
 
-                    $duration = Carbon::parse($createdAt)->diffInDays(Carbon::parse($validUntil));
-                    $vehicle->contract_duration = $duration;
+                    $validUntil = Carbon::parse($validUntil)->startOfDay();
+                    $expires_in = Carbon::now()->startOfDay()->diffInDays($validUntil, false);
+                    $vehicle->expires_in = max($expires_in, 0);
                     $vehicle->contract_created_at = $createdAt;
-                    $vehicle->contract_valid_until = $validUntil;
+                    $vehicle->contract_valid_until = Carbon::parse($validUntil)->toDateString();
                 } else {
-                    $vehicle->contract_duration = null;
+                    $vehicle->expires_in = null;
                 }
             }
 

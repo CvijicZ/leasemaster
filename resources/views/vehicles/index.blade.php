@@ -75,7 +75,7 @@
                             <br>
                             <span class="text-primary">
                                 <strong>Expires in: <i class="fa-regular fa-calendar-days"></i></strong> 
-                                {{ $vehicle['contract_duration'] }} days.
+                                {{ $vehicle['expires_in'] }} days.
                             </span><br>
                         @else
                             <strong>Not Leased</strong> <br>
