@@ -15,6 +15,11 @@ class Vehicle extends Model
     {
         return $this->hasOne(Contract::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(VehicleImage::class);
+    }
     
     protected $fillable = [
         'make', 'model', 'engine', 'miles', 'color', 'seats', 'transmission', 'year', 'fuel_consumption', 'value'
