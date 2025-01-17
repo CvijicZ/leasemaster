@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="container-fluid bg-custom-light py-5">
 
         <!-- Vehicle Details Header -->
@@ -30,7 +30,7 @@
                 <div class="bg-custom text-custom-secondary rounded-lg p-4 shadow-lg w-100">
                     <h5 class="text-center mb-4">Personalize Your Lease</h5>
 
-                    <form action="{{route('lease.create')}}" method="GET" id="leaseForm">
+                    <form action="{{ route('lease.create') }}" method="GET" id="leaseForm">
                         <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
 
                         <!-- Contract Length -->
@@ -71,8 +71,6 @@
                     </form>
                 </div>
             </div>
-
-
 
             <!-- Vehicle Details Column -->
             <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
@@ -128,23 +126,18 @@
             </div>
         </div>
 
-
-
         <!-- Vehicle Image Gallery and Personalize Your Lease in the same row -->
         <div class="row justify-content-center mb-5">
             <!-- Image Gallery Column -->
             <div class="col-lg-6 col-md-9 mb-4 mb-md-0">
                 <div id="vehicleCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        @php
-                            $imageDirectory = public_path("images/vehicles/{$vehicle->id}");
-                            $images = is_dir($imageDirectory) ? glob($imageDirectory . '/*') : [];
-                        @endphp
 
-                        @if (count($images) > 0)
-                            @foreach ($images as $index => $imagePath)
+
+                        @if ($vehicle->images)
+                            @foreach ($vehicle->images as $index => $image)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <img src="{{ asset("images/vehicles/{$vehicle->id}/" . basename($imagePath)) }}"
+                                    <img src="{{ asset('storage/' . $image->path) }}"
                                         alt="{{ $vehicle->make }} {{ $vehicle->model }}"
                                         class="d-block w-100 rounded-lg shadow-lg">
                                 </div>
@@ -157,7 +150,7 @@
                         @endif
                     </div>
 
-                    @if (count($images) > 0)
+                    @if ($vehicle->images)
                         <button class="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel"
                             data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -187,8 +180,6 @@
             height: 100%;
             border-radius: 15px;
         }
-
-   
     </style>
 
     <script>
@@ -206,7 +197,7 @@
 
                 let mileageImpact = (annualMiles - defaultAnnualMiles) / 10000;
                 let monthlyPrice = leasingCosts.monthly_price + (mileageImpact *
-                100);
+                    100);
                 let totalPrice = contractLength * monthlyPrice;
 
                 document.getElementById('monthlyPrice').innerText = `$${monthlyPrice.toFixed(2)} / month`;

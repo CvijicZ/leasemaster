@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
 use App\Http\Requests\CreateVehicleRequest;
-use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\VehicleImage;
 use Illuminate\Support\Carbon;
@@ -26,7 +25,6 @@ class VehicleController extends Controller
         return redirect()->route('admin.rentals')->with('success', 'Vehicle deleted successfully.');
     }
 
-
     public function show($id)
     {
         $vehicle = Vehicle::findOrFail($id);
@@ -40,10 +38,9 @@ class VehicleController extends Controller
         return view('vehicles.show', compact('vehicle', 'leasingCosts'));
     }
 
-
     public function index()
     {
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::with('images')->get();
 
         foreach ($vehicles as $vehicle) {
             $costs = self::calculateBaseLeasingCost($vehicle->value, $vehicle->miles, $vehicle->year);
