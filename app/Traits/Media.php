@@ -1,56 +1,41 @@
 <?php
 
-namespace App\Models;
+namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Intervention\Image\Facades\Image as InterventionImage;
 use Illuminate\Support\Facades\Log;
-use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 
-class Image extends Model
+trait Media
 {
-
-    public static function saveImage($image, string $folder, int $width = 800, int $height = 600): string|false
+    public static function saveImage($image, string $folder, int $width = 1024, int $height = 700): string|false
     {
         try {
             if (!($image instanceof \Illuminate\Http\UploadedFile)) {
                 throw new \InvalidArgumentException('Expected an UploadedFile instance.');
             }
-    
+
             if (!Storage::disk('public')->exists($folder)) {
                 Storage::disk('public')->makeDirectory($folder);
             }
-    
+
             $fileName = uniqid() . '.webp';
             $filePath = "{$folder}/{$fileName}";
-    
+
             $image = InterventionImage::make($image)
                 ->resize($width, $height, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })
                 ->encode('webp', 85);
-    
+
             Storage::disk('public')->put($filePath, $image->stream()->getContents());
-    
-            return Storage::disk('public')->url($filePath);
+
+            return $filePath;
         } catch (Exception $e) {
             Log::error('Image save failed');
             return false;
         }
-    }
-    
-
-
-    public static function getImage(string $path)
-    {
-
-        if (!Storage::disk('public')->exists($path)) {
-            abort(404, 'Image not found.');
-        }
-
-        return Storage::disk('public')->get($path);
     }
 }

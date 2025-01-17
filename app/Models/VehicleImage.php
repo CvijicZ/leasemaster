@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Image;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\Media;
+use Illuminate\Database\Eloquent\Model;
 use Exception;
-use Illuminate\Support\Facades\Log;
 
-class VehicleImage extends Image
+class VehicleImage extends Model
 {
-    protected $table = "vehicle_images";
+    use Media;
+
     const IMAGE_FOLDER = 'vehicles';
 
     protected $fillable = [
@@ -34,8 +34,6 @@ class VehicleImage extends Image
                     'path'       => $imagePath,
                     'vehicle_id' => $vehicleId,
                 ]);
-
-                return true;
             }
         } catch (Exception $e) {
             dd('Failed to save vehicle image', $e->getMessage(), $e->getTraceAsString());
