@@ -28,12 +28,10 @@ class ContractController extends Controller
 
     public function getUsersContracts(int $userId)
     {
-
-        $user = User::with('contracts')->findOrFail($userId);
+        $user = User::with(['contracts.vehicle'])->findOrFail($userId);
     
         $contracts = $user->contracts;
-        $contracts = $user->contracts()->with('vehicle')->get();
-
+    
         return view('contract.index', compact('contracts'));
     }
 
