@@ -26,7 +26,8 @@
 
         /* Adjust main content */
         .main-content {
-            margin-top: 80px; /* Adjust based on navbar height */
+            margin-top: 80px;
+            /* Adjust based on navbar height */
         }
     </style>
 </head>
@@ -52,9 +53,7 @@
                                 href="{{ route('admin.dashboard') }}">cPanel</a>
                         </li>
                     @endadmin
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('pricing') ? 'active' : '' }}" href="#">Pricing</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="#">Contact</a>
                     </li>
@@ -71,31 +70,35 @@
                     @endguest
 
                     @auth
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('auth.logout') ? 'active' : '' }}"
-                                href="{{ route('auth.logout') }}">Logout</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" href="">{{ Auth::user()->name }}</a>
+                            <ul class="dropdown-menu dropdown-menu-end bg-custom " aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item text-custom-secondary" href="{{route('users.edit', Auth::user())}}">Settings <i class="fa-solid fa-gear"></i></a></li>
+                                <li><a class="dropdown-item text-custom-secondary" href="{{route('auth.logout')}}">Logout <i class="fa-solid fa-user-minus"></i></a></li>
                         </li>
-                    @endauth
+                    </ul>
+                @endauth
 
-                    <!-- Theme Toggle Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="themeDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-sun-fill"></i> <!-- Fancy Icon -->
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="themeDropdown">
-                            <li class="px-3 py-2">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">Light</span>
-                                    <label class="theme-switch">
-                                        <input type="checkbox" id="theme-switch">
-                                        <span class="slider"></span>
-                                    </label>
-                                    <span class="ms-2">Dark</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
+                <!-- Theme Toggle Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="themeDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-sun-fill"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="themeDropdown">
+                        <li class="px-3 py-2">
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">Light</span>
+                                <label class="theme-switch">
+                                    <input type="checkbox" id="theme-switch">
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="ms-2">Dark</span>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
                 </ul>
             </div>
         </div>
@@ -113,15 +116,15 @@
             </div>
         </div>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
-    integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 
     <div class="main-content">
         @yield('content')
     </div>
 
-   
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>

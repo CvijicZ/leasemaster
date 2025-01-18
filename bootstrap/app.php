@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\Admin::class,
             'contract.owner' => \App\Http\Middleware\EnsureContractOwnership::class,
+            'user.edit.permission' => \App\Http\Middleware\CheckEditUserAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

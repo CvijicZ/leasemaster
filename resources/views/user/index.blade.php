@@ -24,7 +24,7 @@
                             <td>{{ $user->is_admin == true ? 'Admin' : 'User' }}</td>
                             <td>
                                 <!-- Edit Button -->
-                                <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-primary">
                                     <i class="fa-solid fa-edit"></i> Edit
                                 </a>
 

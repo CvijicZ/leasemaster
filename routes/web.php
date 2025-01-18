@@ -15,6 +15,11 @@ Route::get('/contract/{id}', [ContractController::class, 'show'])
     ->middleware('contract.owner')
     ->name('contract.show');
 
+Route::middleware(['user.edit.permission'])->controller(UserController::class)->group(function () {
+    Route::put('/users/{user}', 'update')->name('users.update');
+    Route::get('/users/{user}/edit', 'edit')->name('users.edit');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
     Route::get('/contract/{contract}', [ContractController::class, 'create'])->name('contract.create');
@@ -37,9 +42,7 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::get('/users', 'index')->name('admin.users');
-        Route::get('/users/{user}/edit', 'edit')->name('admin.users.edit');
         Route::delete('/users/{user}', 'destroy')->name('admin.users.destroy');
-        Route::put('/users/{user}', 'update')->name('admin.users.update');
         Route::put('/users/{user}/role', 'updateRole')->name('admin.users.updateRole');
     });
 

@@ -15,7 +15,14 @@
             </div>
         @endif
 
-        <form action="{{route('admin.users.update', $user->id)}}" method="POST">
+        <!-- Display success message -->
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form action="{{ route('users.update', $user) }}" method="POST">
             @csrf
             @method('PUT')
 

@@ -29,7 +29,7 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, int $userId)
     {
         $validated = $request->validated();
-        $user=User::find($userId);
+        $user = User::findOrFail($userId);
 
         if (!$request->filled('password')) {
             unset($validated['password']);
@@ -37,7 +37,7 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('admin.users')->with('success', 'User updated successfully.');
+        return back()->with('success', 'User updated successfully.');
     }
 
     public function updateRole(User $user)
