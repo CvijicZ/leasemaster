@@ -21,6 +21,7 @@ Route::middleware(['user.edit.permission'])->controller(UserController::class)->
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/user/contracts{userId}', [ContractController::class, 'getUsersContracts'])->name('user.contracts.index');
     Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
     Route::get('/contract/{contract}', [ContractController::class, 'create'])->name('contract.create');
     Route::get('/lease/enquire', [ContractController::class, 'create'])->name('lease.create');

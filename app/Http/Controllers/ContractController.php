@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateContractRequest;
-
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\Contract;
@@ -26,6 +24,17 @@ class ContractController extends Controller
         }
         
         return view('user.show-contract', compact('contract'));
+    }
+
+    public function getUsersContracts(int $userId)
+    {
+
+        $user = User::with('contracts')->findOrFail($userId);
+    
+        $contracts = $user->contracts;
+        $contracts = $user->contracts()->with('vehicle')->get();
+
+        return view('contract.index', compact('contracts'));
     }
 
     public function create(CreateContractRequest $request)

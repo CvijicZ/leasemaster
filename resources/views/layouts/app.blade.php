@@ -75,6 +75,7 @@
                                 aria-expanded="false" href="">{{ Auth::user()->name }}</a>
                             <ul class="dropdown-menu dropdown-menu-end bg-custom " aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item text-custom-secondary" href="{{route('users.edit', Auth::user())}}">Settings <i class="fa-solid fa-gear"></i></a></li>
+                                <li><a class="dropdown-item text-custom-secondary" href="{{route('user.contracts.index', Auth::user()->id)}}">My Contracts <i class="fa-regular fa-newspaper"></i></i></a></li>
                                 <li><a class="dropdown-item text-custom-secondary" href="{{route('auth.logout')}}">Logout <i class="fa-solid fa-user-minus"></i></a></li>
                         </li>
                     </ul>

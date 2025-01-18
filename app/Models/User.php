@@ -17,6 +17,12 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
+    
     protected $fillable = [
         'name',
         'email',

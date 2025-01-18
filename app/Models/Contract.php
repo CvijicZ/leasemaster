@@ -5,12 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Payment;
 use App\Models\Vehicle;
+use App\Models\User;
 
 class Contract extends Model
 {
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function payments()
