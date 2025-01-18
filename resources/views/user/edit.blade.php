@@ -22,6 +22,15 @@
             </div>
         @endif
 
+        <!-- Display current profile image -->
+        <div class="mb-4 text-center">
+            <img src="{{ $user->profilePicture ? asset('storage/' . $user->profilePicture) : asset('images/placeholder.png') }}" 
+                 alt="Profile Image" 
+                 class="rounded-circle" 
+                 style="width: 150px; height: 150px; object-fit: cover;">
+        </div>
+
+        <!-- Form to update user details -->
         <form action="{{ route('users.update', $user) }}" method="POST">
             @csrf
             @method('PUT')
@@ -69,5 +78,21 @@
             <button type="submit" class="btn btn-primary">Update User</button>
         </form>
 
+        <!-- Upload profile image form -->
+        <form action="{{route('user.set.profile.picture', $user->id)}}" method="POST" enctype="multipart/form-data" class="mt-4">
+            @csrf
+            @method('POST')
+
+            <div class="form-group">
+                <label for="profile_image">Profile Image</label>
+                <input type="file" class="form-control-file @error('profile_image') is-invalid @enderror" id="profile_image"
+                    name="profile_image">
+                @error('profile_image')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn btn-secondary">Upload Image</button>
+        </form>
     </div>
 @endsection

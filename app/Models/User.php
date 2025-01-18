@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\ProfilePicture;
 
 class User extends Authenticatable
 {
@@ -22,7 +23,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Contract::class);
     }
-    
+
+    public function profilePicture()
+    {
+        return $this->hasOne(ProfilePicture::class);
+    }
+
     protected $fillable = [
         'name',
         'email',

@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DashboardController;
+use App\Models\ProfilePicture;
 
 Route::get('/', function () {
     return view('home', app(VehicleController::class)->index());
@@ -15,9 +16,10 @@ Route::get('/contract/{id}', [ContractController::class, 'show'])
     ->middleware('contract.owner')
     ->name('contract.show');
 
-Route::middleware(['user.edit.permission'])->controller(UserController::class)->group(function () {
+Route::middleware(['user.edit.permission'])->controller(UserController::class)->group(function () { // Not auth middleware because admin needs to be able to edit any user
     Route::put('/users/{user}', 'update')->name('users.update');
     Route::get('/users/{user}/edit', 'edit')->name('users.edit');
+    Route::post('/user/picture/{user}', [ProfilePicture::class, 'saveProfilePicture'])->name('user.set.profile.picture');
 });
 
 Route::middleware(['auth'])->group(function () {

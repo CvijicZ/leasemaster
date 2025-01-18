@@ -23,6 +23,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        $user->profilePicture = $user->profilePicture()->value('path');
+
         return view('user.edit', compact('user'));
     }
 
