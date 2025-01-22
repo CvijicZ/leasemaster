@@ -10,28 +10,35 @@ use App\Models\Contract;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Log;
+use App\Services\LeaseCostService;
 
 class ContractController extends Controller
 {
+    private $leaseCostService;
+
+    public function __construct(LeaseCostService $leaseCostService)
+    {
+        $this->leaseCostService = $leaseCostService;
+    }
     public function show($id)
     {
         $contract = Contract::find($id);
-        $user=User::find($contract->user_id);
-        $contract['user']=$user;
-        
+        $user = User::find($contract->user_id);
+        $contract['user'] = $user;
+
         if (!$contract) {
             abort(404, 'Contract not found');
         }
-        
+
         return view('user.show-contract', compact('contract'));
     }
 
     public function getUsersContracts(int $userId)
     {
         $user = User::with(['contracts.vehicle'])->findOrFail($userId);
-    
+
         $contracts = $user->contracts;
-    
+
         return view('contract.index', compact('contracts'));
     }
 
@@ -43,11 +50,9 @@ class ContractController extends Controller
             return redirect()->back()->withErrors($contract);
         }
 
-        try{
+        try {
             return view('user.create-contract', ['contract' => $contract]);
-
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             Log::error('Failed to create contract: ' . $e->getMessage());
             return redirect()->back()->withErrors('An error occurred while creating the contract. Please try again.');
         }
@@ -63,14 +68,13 @@ class ContractController extends Controller
 
         try {
             Contract::create($contract);
-            $vehicle=Vehicle::find($contract['vehicle_id']);
-            $vehicle->status=Vehicle::STATUS_LEASED;
-            $vehicle->leased_by=Auth::user()->id;
+            $vehicle = Vehicle::find($contract['vehicle_id']);
+            $vehicle->status = Vehicle::STATUS_LEASED;
+            $vehicle->leased_by = Auth::user()->id;
             $vehicle->save();
 
             return redirect()->route('vehicles.show', ['id' => $contract['vehicle_id']])
-    ->with('success', 'Contract created successfully!');
-
+                ->with('success', 'Contract created successfully!');
         } catch (\Exception $e) {
             Log::error('Failed to create contract: ' . $e->getMessage());
             return redirect()->back()->withErrors('An error occurred while creating the contract. Please try again.');
@@ -92,7 +96,7 @@ class ContractController extends Controller
             return 'Vehicle is already leased.';
         }
 
-        $costs = VehicleController::calculateBaseLeasingCost(
+        $costs = $this->leaseCostService->calculateLeasingCost(
             $vehicle->value,
             $vehicle->miles,
             $vehicle->year,

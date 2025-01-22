@@ -10,15 +10,19 @@ use App\Models\VehicleImage;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Services\LeaseCostService;
+use App\Services\VehicleService;
 
 class VehicleController extends Controller
 {
     private $leaseCostService;
+    private $vehicleService;
 
-    public function __construct(LeaseCostService $leaseCostService)
+    public function __construct(LeaseCostService $leaseCostService, VehicleService $vehicleService)
     {
         $this->leaseCostService = $leaseCostService;
+        $this->vehicleService = $vehicleService;
     }
+
     public function destroy(Request $request)
     {
         $validated = $request->validate([
@@ -47,37 +51,7 @@ class VehicleController extends Controller
 
     public function index()
     {
-        $vehicles = Vehicle::with('images')->get();
-
-        foreach ($vehicles as $vehicle) {
-            $costs = $this->leaseCostService->calculateLeasingCost($vehicle->value, $vehicle->miles, $vehicle->year);
-
-            $user = User::find($vehicle->leased_by);
-
-            $contract = $vehicle->contract;
-            if ($contract) {
-                $vehicle->contract_id = $contract->id;
-                $createdAt = $contract->created_at->toDateString();
-                $validUntil = $contract->valid_until ? $contract->valid_until->toDateString() : null;
-
-                if ($validUntil) {
-
-                    $validUntil = Carbon::parse($validUntil)->startOfDay();
-                    $expires_in = Carbon::now()->startOfDay()->diffInDays($validUntil, false);
-                    $vehicle->expires_in = max($expires_in, 0);
-                    $vehicle->contract_created_at = $createdAt;
-                    $vehicle->contract_valid_until = Carbon::parse($validUntil)->toDateString();
-                } else {
-                    $vehicle->expires_in = null;
-                }
-            }
-
-            $vehicle->price_per_month = $costs['monthly_price'];
-
-            if ($user) {
-                $vehicle->user = $user;
-            }
-        }
+        $vehicles = $this->vehicleService->getAllVehicles();
 
         return compact('vehicles');
     }
